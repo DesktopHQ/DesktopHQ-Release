@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesktopHQ – Multitasking Spaces</title>
+    <style>
+        :root {
+            --bg: #f7f1e6;
+            --ink: #1f1a16;
+            --muted: #5b534a;
+            --divider: #e3d9cc;
+            --card: #fbf6ee;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--ink);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        main {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 72px 28px 140px;
+        }
+
+        section {
+            margin-bottom: 112px;
+        }
+
+        .page-heading {
+            text-align: center;
+        }
+
+        .page-heading__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 28px;
+        }
+
+        .page-heading__subtitle {
+            max-width: 520px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .figure {
+            margin: 0;
+        }
+
+        .figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 18px;
+            box-shadow: 0 28px 64px rgba(31, 26, 22, 0.14);
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .feature-card {
+            text-align: center;
+        }
+
+        .feature-card__heading {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .feature-card__text {
+            max-width: 520px;
+            margin: 0 auto 28px;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .button {
+            padding: 14px 42px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--ink);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            font-size: 0.7rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .button__label {
+            line-height: 1;
+        }
+
+        .button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .button:hover {
+            background-color: var(--ink);
+            color: var(--bg);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 720px) {
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section class="page-heading">
+            <h1 class="page-heading__title">Create spaces for<br>multitasking.</h1>
+            <p class="page-heading__subtitle">Organize windows, switch contexts, and flow between tasks — all without friction.</p>
+        </section>
+
+        <section class="hero-block">
+            <figure class="figure figure--hero">
+                <img src="assets/regular-hero-1.jpg" alt="Regulars NFT hero artwork">
+            </figure>
+        </section>
+
+        <section class="feature-card">
+            <h2 class="feature-card__heading">Get lost in the work, not the windows.</h2>
+            <p class="feature-card__text">DesktopHQ keeps only the windows you need and returns you to the exact context you left, so momentum never slips.</p>
+            <a class="button" href="https://github.com/DesktopHQ/DesktopHQ-Release/releases/download/20260223.1/DesktopHQ-20260223.1.zip" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M17.48 12.38c-.03-2.35 1.91-3.49 2-3.55-1.09-1.6-2.78-1.82-3.38-1.85-1.44-.15-2.81.86-3.55.86-.74 0-1.87-.84-3.08-.81-1.58.02-3.03.92-3.85 2.32-1.63 2.83-.42 7.03 1.17 9.34.8 1.16 1.76 2.47 3.01 2.42 1.21-.05 1.66-.78 3.13-.78 1.47 0 1.87.78 3.09.76 1.28-.02 2.09-1.18 2.89-2.35.91-1.26 1.28-2.48 1.3-2.55-.03-.01-2.5-.96-2.53-3.61zM15.16 5.4c.63-.76 1.06-1.81.94-2.87-.91.04-2.01.6-2.66 1.36-.58.67-1.1 1.76-.96 2.79 1.01.08 2.05-.52 2.68-1.28z"/>
+                </svg>
+                <span class="button__label">Try DesktopHQ</span>
+            </a>
+        </section>
+
+        <footer>© 2025 DesktopHQ — Multitasking Spaces</footer>
+    </main>
+    <script>
+        (function () {
+            const heroImages = [
+                'assets/regular-hero-1.jpg',
+                'assets/regular-hero-2.jpg',
+                'assets/regular-hero-3.jpg'
+            ];
+
+            const heroImg = document.querySelector('.hero-block img');
+            if (!heroImg || heroImages.length === 0) {
+                return;
+            }
+
+            heroImages.forEach((src) => {
+                const preload = new Image();
+                preload.src = src;
+            });
+
+            let index = 0;
+
+            document.addEventListener('click', () => {
+                index = (index + 1) % heroImages.length;
+                heroImg.src = heroImages[index];
+            });
+        })();
+    </script>
+</body>
+</html>
