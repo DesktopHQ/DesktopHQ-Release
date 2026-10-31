@@ -1,0 +1,519 @@
+/* Shared styles for DesktopHQ landing subpages (plugins catalog + detail). */
+
+:root {
+    --bg: #f7f1e6;
+    --ink: #1f1a16;
+    --muted: #5b534a;
+    --divider: #e3d9cc;
+    --card: #fbf6ee;
+    --accent: #2f6fed;
+    --running: #2f9e55;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 28px 140px;
+}
+
+section {
+    margin-bottom: 96px;
+}
+
+/* ── Navigation ─────────────────────────────────────────── */
+
+.site-nav {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 28px 28px 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}
+
+.site-nav a {
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.site-nav a:hover {
+    color: var(--muted);
+}
+
+.site-nav__brand {
+    font-weight: 700;
+}
+
+.site-nav__links {
+    display: flex;
+    gap: 28px;
+}
+
+.site-nav__links a[aria-current="page"] {
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 2px;
+}
+
+/* ── Headings ───────────────────────────────────────────── */
+
+.page-heading {
+    text-align: center;
+}
+
+.page-heading__title {
+    font-family: "Times New Roman", Times, serif;
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 28px;
+}
+
+.page-heading__subtitle {
+    max-width: 540px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.section-heading {
+    font-family: "Times New Roman", Times, serif;
+    font-size: clamp(1.8rem, 3.6vw, 2.4rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 18px;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+
+.button {
+    padding: 14px 42px;
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.7rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.button__label {
+    line-height: 1;
+}
+
+.button:hover {
+    background-color: var(--ink);
+    color: var(--bg);
+}
+
+.button--primary {
+    background-color: var(--ink);
+    color: var(--bg);
+}
+
+.button--primary:hover {
+    background-color: transparent;
+    color: var(--ink);
+}
+
+.button-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.button-hint {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.button-hint a {
+    color: inherit;
+}
+
+/* ── Plugin catalog cards ───────────────────────────────── */
+
+.plugin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.plugin-card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--divider);
+    border-radius: 18px;
+    padding: 28px;
+    text-decoration: none;
+    color: var(--ink);
+    /* Shadow-only hover: a transform here moves the click target mid-press,
+       which can swallow clicks (and trips automation stability checks). */
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.plugin-card:hover {
+    border-color: var(--muted);
+    box-shadow: 0 18px 40px rgba(31, 26, 22, 0.12);
+}
+
+.plugin-card--placeholder {
+    border-style: dashed;
+    color: var(--muted);
+}
+
+.plugin-card--placeholder:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.plugin-card__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 18px;
+    background: linear-gradient(135deg, #ff9f0a, #ff453a);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(255, 99, 40, 0.3);
+}
+
+.plugin-card__icon--neutral {
+    background: var(--divider);
+    color: var(--muted);
+    box-shadow: none;
+}
+
+.plugin-card__name {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+    font-weight: 400;
+}
+
+.plugin-card__blurb {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin: 0 0 16px;
+}
+
+.plugin-card__meta {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+/* ── Detail page pieces ─────────────────────────────────── */
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    text-align: left;
+}
+
+.feature {
+    background: var(--card);
+    border: 1px solid var(--divider);
+    border-radius: 18px;
+    padding: 24px;
+}
+
+.feature h3 {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: 400;
+    font-size: 1.25rem;
+    margin: 0 0 8px;
+}
+
+.feature p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.chip {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border: 1px solid var(--divider);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 5px 14px;
+    color: var(--muted);
+}
+
+.meta-list {
+    display: flex;
+    gap: 36px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 0 24px;
+    padding: 0;
+    list-style: none;
+}
+
+.meta-list li {
+    text-align: center;
+}
+
+.meta-list .label {
+    display: block;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 2px;
+}
+
+.meta-list .value {
+    font-size: 0.95rem;
+}
+
+.codeblock {
+    background: #211c18;
+    color: #efe7da;
+    border-radius: 14px;
+    padding: 18px 22px;
+    font-family: "SF Mono", ui-monospace, Menlo, monospace;
+    font-size: 0.82rem;
+    overflow-x: auto;
+    text-align: left;
+    white-space: pre;
+}
+
+.codeblock .comment {
+    color: #9b9186;
+}
+
+/* ── Workspace bar mock (Focus Timer page) ──────────────── */
+
+.bar-mock {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    align-items: stretch;
+    padding: 64px 32px;
+    background: linear-gradient(160deg, #e8ddcc, #f1e2d2);
+    border-radius: 22px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.mock-pill {
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 26px;
+    padding: 22px 52px 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 24px 56px rgba(31, 26, 22, 0.18);
+    min-width: 190px;
+}
+
+.mock-pill__label {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+}
+
+.mock-pill__label--running {
+    color: var(--ink);
+}
+
+.mock-ring {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 5px solid rgba(31, 26, 22, 0.14);
+    position: relative;
+}
+
+.mock-ring--running {
+    border: none;
+    background:
+        conic-gradient(var(--running) 0deg 126deg, rgba(31, 26, 22, 0.14) 126deg 360deg);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 5px));
+}
+
+.mock-ring__glyph {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: var(--muted);
+}
+
+.mock-caption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 18px;
+}
+
+@media (max-width: 560px) {
+    .bar-mock {
+        gap: 16px;
+        padding: 40px 20px;
+    }
+
+    .mock-pill {
+        min-width: 0;
+        padding: 16px 28px 20px;
+    }
+}
+
+/* ── Steps ──────────────────────────────────────────────── */
+
+.steps {
+    counter-reset: step;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 560px;
+    margin-inline: auto;
+    text-align: left;
+}
+
+.steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 18px 56px;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1rem;
+    color: var(--ink);
+}
+
+.steps strong {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+/* ── Changelog (standard section on every plugin page) ──── */
+
+.changelog {
+    max-width: 620px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.changelog-entry {
+    border-top: 1px solid var(--divider);
+    padding: 22px 0;
+}
+
+.changelog-entry:last-child {
+    border-bottom: 1px solid var(--divider);
+}
+
+.changelog-entry__header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.changelog-entry__version {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.3rem;
+}
+
+.changelog-entry__date {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.changelog-entry__tag {
+    margin-left: auto;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border: 1px solid var(--divider);
+    border-radius: 999px;
+    padding: 3px 12px;
+    color: var(--muted);
+}
+
+.changelog-entry ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.changelog-entry li {
+    margin-bottom: 4px;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+}

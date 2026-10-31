@@ -1,0 +1,594 @@
+/* Playable plugin cards (rendered by plugins.js). */
+
+.pl-section {
+    text-align: center;
+}
+
+.pl-showcase {
+    /* The app's spring (mass 1, stiffness 320, damping 24), sampled every 10 ms; older browsers get a close Bézier. */
+    --spring: 0.42s cubic-bezier(0.34, 1.4, 0.64, 1);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 40px;
+    text-align: left;
+    line-height: 1.35;
+}
+
+@supports (transition-timing-function: linear(0, 1)) {
+    .pl-showcase {
+        --spring: 0.6s linear(0.0000, 0.0148, 0.0543, 0.1123, 0.1830, 0.2619, 0.3449, 0.4287, 0.5109, 0.5894, 0.6628, 0.7301, 0.7908, 0.8444, 0.8910, 0.9307, 0.9639, 0.9911, 1.0127, 1.0294, 1.0416, 1.0501, 1.0553, 1.0579, 1.0582, 1.0569, 1.0542, 1.0505, 1.0462, 1.0415, 1.0366, 1.0318, 1.0270, 1.0225, 1.0184, 1.0146, 1.0112, 1.0082, 1.0056, 1.0034, 1.0016, 1.0001, 0.9989, 0.9980, 0.9974, 0.9970, 0.9967, 0.9966, 0.9966, 0.9967, 0.9969, 0.9971, 0.9974, 0.9977, 0.9980, 0.9982, 0.9985, 0.9988, 0.9990, 0.9992, 0.9994);
+    }
+}
+
+.pl-showcase--single {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 0;
+}
+
+.pl-showcase--pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pl-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 300px;
+    padding: 24px;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #fbf6ee;
+    box-shadow: 0 0 0 1px rgba(31, 26, 22, 0.07), 0 18px 44px rgba(31, 26, 22, 0.08);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pl-card button {
+    font: inherit;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pl-card__head {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.pl-card__name {
+    margin: 0 0 6px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+}
+
+.pl-card__blurb {
+    margin: 0;
+    max-width: 30ch;
+    font-size: 0.9rem;
+    opacity: 0.72;
+}
+
+.pl-card__more {
+    margin-top: auto;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.pl-card__more:hover {
+    opacity: 1;
+}
+
+.pl-all {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 8px;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+}
+
+/* ── Focus Timer ─────────────────────────────────────── */
+
+.pl-timer {
+    --accent: #ff7a45;
+    grid-column: 1 / -1;
+    color: #f7f1e6;
+    background:
+        radial-gradient(60% 80% at 85% 10%, rgba(255, 122, 69, 0.22), transparent 70%),
+        #1f1a16;
+}
+
+.pl-timer__body {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "dial pill"
+        "dial controls"
+        "dial chips"
+        "dial music";
+    column-gap: 40px;
+    row-gap: 18px;
+    align-items: center;
+}
+
+.pl-sound {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(247, 241, 230, 0.1);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.pl-sound svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pl-sound__body {
+    fill: currentColor;
+}
+
+.pl-sound__off,
+.pl-sound[aria-pressed="false"] .pl-sound__waves {
+    display: none;
+}
+
+.pl-sound[aria-pressed="false"] .pl-sound__off {
+    display: inline;
+}
+
+/* The bar item, as it looks in the workspace bar. */
+.pl-pill {
+    grid-area: pill;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 34px;
+    padding: 0 14px 0 9px;
+    border-radius: 999px;
+    background: rgba(247, 241, 230, 0.12);
+    box-shadow: inset 0 0 0 1px rgba(247, 241, 230, 0.14);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    transition: background-color 0.3s ease;
+}
+
+.pl-pill__label {
+    min-width: 7ch;
+}
+
+.pl-timer:not([data-state="idle"]) .pl-pill {
+    background: rgba(255, 122, 69, 0.18);
+}
+
+.pl-pill__ring {
+    width: 20px;
+    height: 20px;
+    transform: rotate(-90deg);
+}
+
+.pl-pill__ring circle {
+    fill: none;
+    stroke: rgba(247, 241, 230, 0.3);
+    stroke-width: 2.2;
+}
+
+.pl-pill__ring .pl-pill__fill {
+    stroke: var(--accent);
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.36s ease-in;
+}
+
+.pl-dial {
+    grid-area: dial;
+    position: relative;
+    width: min(100%, 300px);
+    aspect-ratio: 1;
+    justify-self: center;
+}
+
+.pl-dial svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+    overflow: visible;
+}
+
+.pl-dial circle {
+    fill: none;
+    stroke-width: 10;
+}
+
+.pl-dial__track {
+    stroke: rgba(247, 241, 230, 0.1);
+}
+
+.pl-dial__arc {
+    stroke: var(--accent);
+    stroke-linecap: round;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.25s linear, stroke 0.3s ease;
+    filter: drop-shadow(0 0 10px rgba(255, 122, 69, 0.45));
+}
+
+.pl-timer[data-state="idle"] .pl-dial__arc {
+    stroke: rgba(247, 241, 230, 0.32);
+    filter: none;
+}
+
+/* Paused: the ring breathes. Stopped: it drains back to full in one sweep. */
+.pl-timer[data-state="paused"] .pl-dial__arc {
+    animation: pl-breathe 1.6s ease-in-out infinite;
+}
+
+.pl-timer.is-draining .pl-dial__arc,
+.pl-timer.is-draining .pl-pill__fill {
+    transition: stroke-dashoffset 0.36s ease-in, stroke 0.3s ease;
+}
+
+@keyframes pl-breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.45; }
+}
+
+.pl-dial__face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.pl-dial__time {
+    font-family: "SF Pro Rounded", ui-rounded, "Helvetica Neue", Arial, sans-serif;
+    font-size: clamp(2.6rem, 9vw, 4rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.pl-dial__status {
+    font-size: 0.7rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.pl-controls {
+    grid-area: controls;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 72px;
+}
+
+.pl-btn {
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.pl-btn svg {
+    width: 28px;
+    height: 28px;
+}
+
+.pl-btn--main {
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    background: var(--accent);
+    color: #1f1a16;
+    box-shadow: 0 10px 26px rgba(255, 122, 69, 0.4);
+    transition: transform var(--spring), border-radius var(--spring);
+}
+
+.pl-btn--main:active {
+    transform: scale(0.92);
+}
+
+/* Running, the round button relaxes into a rounded square. */
+.pl-timer[data-state="running"] .pl-btn--main {
+    border-radius: 24px;
+}
+
+.pl-btn__glyph {
+    fill: currentColor;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+}
+
+/* Stop buds out of the main button once a session exists. */
+.pl-btn--stop {
+    order: 2;
+    width: 52px;
+    height: 52px;
+    background: rgba(247, 241, 230, 0.12);
+    color: #f7f1e6;
+    opacity: 0;
+    transform: scale(0.86);
+    pointer-events: none;
+    transition: transform var(--spring), opacity 0.2s ease;
+}
+
+.pl-btn--stop svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.pl-timer:not([data-state="idle"]) .pl-btn--stop {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+.pl-chips,
+.pl-music {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.pl-chips {
+    grid-area: chips;
+}
+
+.pl-music {
+    grid-area: music;
+}
+
+.pl-music__label {
+    width: 100%;
+    font-size: 0.68rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    opacity: 0.55;
+}
+
+.pl-chips button,
+.pl-music button {
+    min-height: 34px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(247, 241, 230, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(247, 241, 230, 0.14);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.pl-chips button[aria-pressed="true"],
+.pl-music button[aria-pressed="true"] {
+    background: #f7f1e6;
+    color: #1f1a16;
+}
+
+.pl-chips button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+/* ── Keep Awake ──────────────────────────────────────── */
+
+.pl-awake {
+    color: #f3ecdc;
+    background: #1b2142;
+    align-items: center;
+    text-align: center;
+    transition: color 0.5s ease;
+}
+
+.pl-awake .pl-card__head {
+    align-self: stretch;
+    text-align: left;
+}
+
+.pl-awake::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, #ffd27a 0%, #ffe9bd 55%, #fff6e2 100%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.pl-awake[data-on="true"] {
+    color: #3b2a0c;
+}
+
+.pl-awake[data-on="true"]::before {
+    opacity: 1;
+}
+
+.pl-awake__sky i {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.8;
+    transition: opacity 0.4s ease, transform 0.6s ease;
+}
+
+.pl-awake[data-on="true"] .pl-awake__sky i {
+    opacity: 0;
+    transform: translateY(-14px);
+}
+
+.pl-awake__toggle {
+    position: relative;
+    z-index: 1;
+    width: 132px;
+    height: 132px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    cursor: pointer;
+    transition: background-color 0.5s ease, transform var(--spring);
+}
+
+.pl-awake__toggle:active {
+    transform: scale(0.94);
+}
+
+.pl-awake[data-on="true"] .pl-awake__toggle {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.pl-awake__toggle svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.pl-awake__disc {
+    fill: #f3ead2;
+    transition: fill 0.42s ease;
+}
+
+.pl-awake[data-on="true"] .pl-awake__disc {
+    fill: #ffab1a;
+}
+
+/* The moon's shadow slides off the disc; that is what turns it into the sun. */
+.pl-awake__shadow {
+    transition: transform var(--spring);
+}
+
+.pl-awake[data-on="true"] .pl-awake__shadow {
+    transform: translate(34px, -30px) scale(0.2);
+}
+
+.pl-awake__rays line {
+    stroke: #ffab1a;
+    stroke-width: 5;
+    stroke-linecap: round;
+}
+
+.pl-awake__rays {
+    transform: rotate(-45deg) scale(0.4);
+    opacity: 0;
+    transition: transform var(--spring), opacity 0.2s ease;
+}
+
+.pl-awake[data-on="true"] .pl-awake__rays {
+    transform: none;
+    opacity: 1;
+}
+
+.pl-awake__rays line {
+    opacity: 0;
+    transition: opacity 0.2s ease calc(var(--i) * 20ms);
+}
+
+.pl-awake[data-on="true"] .pl-awake__rays line {
+    opacity: 1;
+}
+
+.pl-awake__status {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.pl-awake__status span {
+    opacity: 0.7;
+}
+
+.pl-card :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+    .pl-showcase {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pl-card {
+        padding: 22px;
+        border-radius: 24px;
+    }
+
+    .pl-timer__body {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "pill"
+            "dial"
+            "controls"
+            "chips"
+            "music";
+        justify-items: center;
+        row-gap: 20px;
+    }
+
+    .pl-pill {
+        justify-self: center;
+    }
+
+    .pl-dial {
+        width: min(100%, 250px);
+    }
+
+    .pl-chips,
+    .pl-music {
+        justify-content: center;
+    }
+
+    .pl-music__label {
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pl-showcase * {
+        transition-duration: 0s !important;
+        animation: none !important;
+    }
+}

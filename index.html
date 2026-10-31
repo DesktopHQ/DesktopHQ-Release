@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DesktopHQ – Multitasking Spaces</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f1a16'/%3E%3Ctext x='32' y='44' font-family='Times New Roman,serif' font-size='38' fill='%23f7f1e6' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #f7f1e6;
+            --ink: #1f1a16;
+            --muted: #5b534a;
+            --divider: #e3d9cc;
+            --card: #fbf6ee;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--ink);
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        main {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 72px 28px 140px;
+        }
+
+        section {
+            margin-bottom: 112px;
+        }
+
+        .page-heading {
+            text-align: center;
+        }
+
+        .page-heading__title {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 28px;
+        }
+
+        .page-heading__subtitle {
+            max-width: 520px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .figure {
+            margin: 0;
+        }
+
+        .figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 18px;
+            box-shadow: 0 28px 64px rgba(31, 26, 22, 0.14);
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .feature-card {
+            text-align: center;
+        }
+
+        .feature-card__heading {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(2.4rem, 5vw, 3.6rem);
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .feature-card__text {
+            max-width: 520px;
+            margin: 0 auto 28px;
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        .button {
+            padding: 14px 42px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            background: transparent;
+            color: var(--ink);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.24em;
+            font-size: 0.7rem;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .button__label {
+            line-height: 1;
+        }
+
+        .button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .button:hover {
+            background-color: var(--ink);
+            color: var(--bg);
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .site-nav {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 28px 28px 0;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+        }
+
+        .site-nav a {
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .site-nav a:hover {
+            color: var(--muted);
+        }
+
+        .site-nav__brand {
+            font-weight: 700;
+        }
+
+        .site-nav__links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .site-nav__links a[aria-current="page"] {
+            border-bottom: 1px solid var(--ink);
+            padding-bottom: 2px;
+        }
+
+        /* ── Live demo: a tiny playable DesktopHQ ─────────────── */
+
+        .hq-demo {
+            text-align: center;
+        }
+
+        .hq-stage {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            margin: 0 0 22px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 28px 64px rgba(31, 26, 22, 0.18), 0 0 0 1px rgba(31, 26, 22, 0.08);
+            container-type: inline-size;
+            text-align: left;
+            line-height: 1.2;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            background:
+                radial-gradient(70% 55% at 18% 0%, rgba(255, 255, 255, 0.75), transparent 70%),
+                radial-gradient(45% 40% at 92% 30%, rgba(255, 222, 200, 0.6), transparent 70%),
+                linear-gradient(180deg, #e9eef5 0%, #dde5ef 55%, #d9e2ee 100%);
+        }
+
+        .hq-menubar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 0 14px;
+            font-size: 12px;
+            color: #1f1a16;
+            background: rgba(255, 255, 255, 0.4);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+        }
+
+        .hq-menubar__apple {
+            width: 13px;
+            height: 14px;
+            margin-right: -2px;
+            fill: currentColor;
+            flex: none;
+        }
+
+        .hq-menubar__menus {
+            color: #1f1a16;
+        }
+
+        .hq-menubar strong {
+            font-weight: 700;
+        }
+
+        .hq-menubar__space {
+            color: #5b534a;
+        }
+
+        .hq-menubar__clock {
+            margin-left: auto;
+        }
+
+        .hq-desktop {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .hq-win {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            background: #fff;
+            color: #1f1a16;
+            box-shadow: 0 14px 34px rgba(20, 16, 12, 0.2), 0 0 0 0.5px rgba(20, 16, 12, 0.18);
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.22, 1.15, 0.36, 1), opacity 0.35s ease;
+            transition-delay: var(--d, 0s);
+            cursor: default;
+        }
+
+        .hq-win.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.34s cubic-bezier(0.55, 0, 0.75, 0.2), opacity 0.26s ease-in;
+            transition-delay: var(--d, 0s);
+        }
+
+        .hq-win--dark {
+            background: #1c1e24;
+            color: #e8e6e3;
+        }
+
+        .hq-win__bar {
+            flex: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 22px;
+            padding: 0 9px;
+            font-size: 10.5px;
+            color: #7a7168;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.025);
+        }
+
+        .hq-win--dark .hq-win__bar {
+            color: #8d8a86;
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .hq-win__bar i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6159;
+        }
+
+        .hq-win__bar i:nth-child(2) {
+            background: #ffbd2e;
+        }
+
+        .hq-win__bar i:nth-child(3) {
+            background: #28c840;
+        }
+
+        .hq-win__bar span {
+            margin-left: 6px;
+            white-space: nowrap;
+        }
+
+        .hq-win__body {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        /* Window content building blocks */
+
+        .hq-l {
+            display: block;
+            height: 6px;
+            margin-bottom: 7px;
+            border-radius: 3px;
+            background: currentColor;
+            opacity: 0.16;
+        }
+
+        .hq-row {
+            display: flex;
+            gap: 8px;
+            height: 100%;
+        }
+
+        .hq-col {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hq-box {
+            border-radius: 6px;
+        }
+
+        .hq-dot {
+            flex: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .hq-item {
+            display: flex;
+            gap: 7px;
+            align-items: flex-start;
+            margin-bottom: 9px;
+        }
+
+        .hq-item .hq-col .hq-l {
+            margin-bottom: 4px;
+        }
+
+        .hq-cal {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 3px;
+            height: 100%;
+        }
+
+        .hq-cal span {
+            border-radius: 3px;
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .hq-ring {
+            width: 74%;
+            max-width: 120px;
+            aspect-ratio: 1;
+            margin: 2px auto 0;
+            border-radius: 50%;
+            background: conic-gradient(#ff6a1f 0 64%, rgba(255, 255, 255, 0.12) 0);
+            display: grid;
+            place-items: center;
+        }
+
+        .hq-ring::after {
+            content: "18:24";
+            width: 76%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #1c1e24;
+            display: grid;
+            place-items: center;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Workspace bar (mirrors the app's dock-style bar) */
+
+        .hq-bar {
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            z-index: 5;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 16px;
+            background: rgba(246, 243, 238, 0.66);
+            -webkit-backdrop-filter: blur(22px) saturate(1.6);
+            backdrop-filter: blur(22px) saturate(1.6);
+            box-shadow: 0 12px 32px rgba(20, 16, 12, 0.22), inset 0 0 0 0.5px rgba(255, 255, 255, 0.7);
+            border: 0.5px solid rgba(20, 16, 12, 0.12);
+            white-space: nowrap;
+        }
+
+        .hq-bar[hidden] {
+            display: none;
+        }
+
+        .hq-bar__pill {
+            position: absolute;
+            top: 5px;
+            bottom: 5px;
+            left: 0;
+            width: 0;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 1px 3px rgba(20, 16, 12, 0.1), inset 0 0 0 0.5px rgba(20, 16, 12, 0.08);
+            transition: left 0.5s cubic-bezier(0.34, 1.3, 0.64, 1), width 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+        }
+
+        .hq-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 11px;
+            border: 0;
+            border-radius: 11px;
+            background: transparent;
+            color: #5b534a;
+            font: 600 12.5px/1 "Helvetica Neue", Arial, sans-serif;
+            cursor: pointer;
+            transition: color 0.2s ease, background-color 0.2s ease;
+        }
+
+        .hq-group:hover:not(.is-active) {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        .hq-group.is-active {
+            color: #1f1a16;
+        }
+
+        .hq-group:focus-visible {
+            outline: 2px solid #2f6fed;
+            outline-offset: -2px;
+        }
+
+        .hq-group__icons {
+            display: flex;
+        }
+
+        .hq-group__icons img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .hq-group__icons img + img {
+            margin-left: -5px;
+        }
+
+        .hq-appicon {
+            width: 14px;
+            height: 14px;
+            margin: 0 5px -3px 0;
+        }
+
+        .hq-bubble {
+            width: 62%;
+            margin-bottom: 7px;
+            padding: 6px 8px 0;
+            border-radius: 10px;
+            background: #e9e9eb;
+            color: #1f1a16;
+        }
+
+        .hq-bubble--me {
+            margin-left: auto;
+            background: #2f8cff;
+            color: #fff;
+        }
+
+        .hq-bubble .hq-l {
+            opacity: 0.35;
+        }
+
+        /* Bar, video mode: a recording of the real DesktopHQ2 bar with click targets on top. */
+
+        .hq-vbar {
+            position: absolute;
+            left: 50%;
+            bottom: 2px;
+            z-index: 5;
+            width: clamp(240px, 46%, 430px);
+            aspect-ratio: 296 / 84;
+            transform: translateX(-50%);
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(transparent, #000 14%, #000 86%, transparent);
+            -webkit-mask-composite: source-in;
+            mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent), linear-gradient(transparent, #000 14%, #000 86%, transparent);
+            mask-composite: intersect;
+        }
+
+        .hq-vbar video,
+        .hq-vbar__poster,
+        .hq-vbar canvas,
+        .hq-vbar__targets {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .hq-vbar__poster.is-gone {
+            display: none;
+        }
+
+        .hq-vbar__target {
+            position: absolute;
+            padding: 0;
+            border: 0;
+            border-radius: 16% / 22%;
+            background: transparent;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        .hq-vbar__target:hover:not(.is-active) {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .hq-vbar__target:focus-visible {
+            outline: 2px solid #2f6fed;
+            outline-offset: -2px;
+        }
+
+        .hq-divider {
+            width: 1px;
+            height: 18px;
+            margin: 0 1px;
+            background: rgba(20, 16, 12, 0.12);
+        }
+
+        .hq-bar__plus {
+            padding: 0 10px 0 9px;
+            color: #9a9088;
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+        .hq-cursor {
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            z-index: 6;
+            width: 22px;
+            pointer-events: none;
+            transition: left 0.85s cubic-bezier(0.45, 0, 0.2, 1), top 0.85s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.3s ease;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+        }
+
+        .hq-cursor svg {
+            display: block;
+            width: 100%;
+            transform-origin: 20% 10%;
+            transition: transform 0.12s ease;
+        }
+
+        .hq-cursor.is-clicking svg {
+            transform: scale(0.8);
+        }
+
+        .hq-cursor.is-gone {
+            opacity: 0;
+        }
+
+        .hq-demo__hint {
+            margin: 0 0 56px;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .hq-demo__hint kbd {
+            display: inline-block;
+            min-width: 1.6em;
+            padding: 1px 6px;
+            border: 1px solid var(--divider);
+            border-bottom-width: 2px;
+            border-radius: 5px;
+            background: var(--card);
+            font: inherit;
+            font-size: 0.78rem;
+        }
+
+        .hq-sr {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            white-space: nowrap;
+        }
+
+        @container (max-width: 560px) {
+            .hq-menubar {
+                height: 18px;
+                gap: 10px;
+                padding: 0 9px;
+                font-size: 9px;
+            }
+
+            .hq-menubar__apple {
+                width: 10px;
+                height: 11px;
+            }
+
+            .hq-menubar__menus {
+                display: none;
+            }
+
+            .hq-desktop {
+                top: 18px;
+                bottom: 18px;
+            }
+
+            .hq-win {
+                border-radius: 6px;
+            }
+
+            .hq-win__bar {
+                height: 12px;
+                gap: 3px;
+                padding: 0 5px;
+            }
+
+            .hq-win__bar i {
+                width: 4px;
+                height: 4px;
+            }
+
+            .hq-win__bar span {
+                display: none;
+            }
+
+            .hq-win__body {
+                padding: 5px;
+            }
+
+            .hq-l {
+                height: 3px;
+                margin-bottom: 4px;
+            }
+
+            .hq-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            .hq-item {
+                gap: 4px;
+                margin-bottom: 5px;
+            }
+
+            .hq-ring::after {
+                font-size: 8px;
+            }
+
+            .hq-bar {
+                bottom: 8px;
+                padding: 3px;
+                border-radius: 12px;
+            }
+
+            .hq-bar__pill {
+                top: 3px;
+                bottom: 3px;
+                border-radius: 9px;
+            }
+
+            .hq-group {
+                gap: 5px;
+                height: 32px;
+                padding: 0 7px;
+                border-radius: 9px;
+                font-size: 11px;
+            }
+
+            .hq-group__icons img {
+                width: 14px;
+                height: 14px;
+            }
+
+            .hq-appicon {
+                width: 8px;
+                height: 8px;
+            }
+
+            .hq-bubble {
+                margin-bottom: 4px;
+                padding: 3px 4px 0;
+                border-radius: 6px;
+            }
+
+            .hq-group__icons img:nth-child(n + 3),
+            .hq-bar__plus {
+                display: none;
+            }
+
+            .hq-cursor {
+                width: 16px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .hq-stage {
+                aspect-ratio: 4 / 3.4;
+                border-radius: 16px;
+            }
+
+            .hq-demo__hint .hq-keys {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .hq-win,
+            .hq-win.is-hidden,
+            .hq-bar__pill,
+            .hq-vbar__target {
+                transition: none;
+            }
+        }
+
+        @media (max-width: 720px) {
+        }
+
+        .dl-note {
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 0.8rem;
+        }
+
+        .dl-note a {
+            color: var(--ink);
+        }
+    </style>
+    <link rel="stylesheet" href="assets/plugins.css">
+    <link rel="stylesheet" href="assets/stories.css">
+</head>
+<body>
+    <nav class="site-nav">
+        <a class="site-nav__brand" href="./">DesktopHQ</a>
+        <div class="site-nav__links">
+            <a href="./" aria-current="page">Home</a>
+            <a href="plugins/">Plugins</a>
+        </div>
+    </nav>
+    <main>
+        <section class="page-heading">
+            <h1 class="page-heading__title">Create spaces for<br>multitasking.</h1>
+            <p class="page-heading__subtitle">Organize windows, switch contexts, and flow between tasks — all without friction.</p>
+        </section>
+
+        <section class="hq-demo feature-card" aria-labelledby="hq-demo-heading">
+            <div class="hq-stage">
+                <div class="hq-menubar" aria-hidden="true">
+                    <svg class="hq-menubar__apple" viewBox="3 2 18 20"><path d="M17.48 12.38c-.03-2.35 1.91-3.49 2-3.55-1.09-1.6-2.78-1.82-3.38-1.85-1.44-.15-2.81.86-3.55.86-.74 0-1.87-.84-3.08-.81-1.58.02-3.03.92-3.85 2.32-1.63 2.83-.42 7.03 1.17 9.34.8 1.16 1.76 2.47 3.01 2.42 1.21-.05 1.66-.78 3.13-.78 1.47 0 1.87.78 3.09.76 1.28-.02 2.09-1.18 2.89-2.35.91-1.26 1.28-2.48 1.3-2.55-.03-.01-2.5-.96-2.53-3.61zM15.16 5.4c.63-.76 1.06-1.81.94-2.87-.91.04-2.01.6-2.66 1.36-.58.67-1.1 1.76-.96 2.79 1.01.08 2.05-.52 2.68-1.28z"/></svg>
+                    <strong>DesktopHQ</strong>
+                    <span class="hq-menubar__menus">File&ensp;Edit&ensp;View&ensp;Window</span>
+                    <span class="hq-menubar__space"></span>
+                    <span class="hq-menubar__clock">Thu 9:41</span>
+                </div>
+                <div class="hq-desktop" aria-hidden="true"></div>
+                <div class="hq-vbar">
+                    <video muted playsinline preload="metadata" aria-hidden="true">
+                        <source src="assets/bar-switch.mp4" type="video/mp4">
+                    </video>
+                    <img class="hq-vbar__poster" src="assets/bar-design.jpg" alt="">
+                    <canvas hidden aria-hidden="true"></canvas>
+                    <div class="hq-vbar__targets" role="tablist" aria-label="Spaces"></div>
+                </div>
+                <div class="hq-bar" role="tablist" aria-label="Spaces" hidden>
+                    <div class="hq-bar__pill"></div>
+                </div>
+                <div class="hq-cursor is-gone" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M5 2.5v17.2l4.3-4.1 2.8 6.3 3-1.3-2.8-6.2h6z" fill="#fff" stroke="#1f1a16" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                </div>
+                <p class="hq-sr" aria-live="polite"></p>
+            </div>
+            <p class="hq-demo__hint">Try it: tap a space in the bar<span class="hq-keys">, or press <kbd>1</kbd>–<kbd>4</kbd></span>.</p>
+            <h2 class="feature-card__heading" id="hq-demo-heading">One click.<br>A whole new desktop.</h2>
+            <p class="feature-card__text">Each space remembers its own windows. Switch, and everything you don't need steps aside while the right windows come back exactly where you left them.</p>
+        </section>
+
+        <section class="st-section" id="plugins" aria-labelledby="st-heading">
+            <p class="st-eyebrow">Plugins</p>
+            <h2 class="feature-card__heading" id="st-heading">Small tools that<br>earn their spot.</h2>
+            <p class="feature-card__text">Each one lives in your bar, a click away, and never shoves anything around. Watch them work, then tap to try.</p>
+            <div class="st-player" data-root=""></div>
+            <p class="st-all"><a class="st-more" href="plugins/">All plugins →</a></p>
+        </section>
+
+
+        <section class="feature-card" id="download">
+            <h2 class="feature-card__heading">Get lost in the work, not the windows.</h2>
+            <p class="feature-card__text">DesktopHQ keeps only the windows you need and returns you to the exact context you left, so momentum never slips.</p>
+            <a class="button" href="https://github.com/DesktopHQ/DesktopHQ2-Release/releases/latest/download/DesktopHQ2-arm64.zip" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M17.48 12.38c-.03-2.35 1.91-3.49 2-3.55-1.09-1.6-2.78-1.82-3.38-1.85-1.44-.15-2.81.86-3.55.86-.74 0-1.87-.84-3.08-.81-1.58.02-3.03.92-3.85 2.32-1.63 2.83-.42 7.03 1.17 9.34.8 1.16 1.76 2.47 3.01 2.42 1.21-.05 1.66-.78 3.13-.78 1.47 0 1.87.78 3.09.76 1.28-.02 2.09-1.18 2.89-2.35.91-1.26 1.28-2.48 1.3-2.55-.03-.01-2.5-.96-2.53-3.61zM15.16 5.4c.63-.76 1.06-1.81.94-2.87-.91.04-2.01.6-2.66 1.36-.58.67-1.1 1.76-.96 2.79 1.01.08 2.05-.52 2.68-1.28z"/>
+                </svg>
+                <span class="button__label">Try DesktopHQ2</span>
+            </a>
+            <p class="dl-note">Apple silicon · macOS 14+ · <a href="https://github.com/DesktopHQ/DesktopHQ2-Release/releases/latest" target="_blank" rel="noopener">What’s new</a></p>
+        </section>
+
+        <footer>© 2026 DesktopHQ — Multitasking Spaces</footer>
+    </main>
+    <script>
+        (function () {
+            const stage = document.querySelector('.hq-stage');
+            if (!stage) {
+                return;
+            }
+
+            const desktop = stage.querySelector('.hq-desktop');
+            const spaceLabel = stage.querySelector('.hq-menubar__space');
+            const cursor = stage.querySelector('.hq-cursor');
+            const live = stage.querySelector('.hq-sr');
+
+            const l = (w, color) => `<i class="hq-l" style="width:${w}%${color ? `;background:${color};opacity:1` : ''}"></i>`;
+            const item = (dot, a, b) => `<div class="hq-item"><span class="hq-dot" style="background:${dot}"></span><div class="hq-col">${l(a)}${l(b)}</div></div>`;
+
+            const APPS = {
+                freeform: {
+                    name: 'Freeform',
+                    body: () => `<div class="hq-box" style="height:100%;background:#fbfaf7;background-image:radial-gradient(#d9d4cc 1px,transparent 1px);background-size:14px 14px;position:relative">
+                        <div class="hq-box" style="position:absolute;left:8%;top:12%;width:34%;height:40%;background:#ffd75e;box-shadow:0 2px 6px rgba(0,0,0,.12);padding:4%">${l(70)}${l(50)}</div>
+                        <div class="hq-box" style="position:absolute;left:48%;top:20%;width:38%;height:46%;background:#fff;box-shadow:0 0 0 2px #3d7bff;padding:4%"><div class="hq-box" style="height:50%;background:linear-gradient(120deg,#ff6a1f,#ff5fa8);margin-bottom:8%"></div>${l(80)}</div>
+                        <div style="position:absolute;left:16%;top:62%;width:26%;aspect-ratio:1;border-radius:50%;border:3px solid #4fd18b"></div></div>`
+                },
+                safari: {
+                    name: 'Safari',
+                    body: () => `<i class="hq-l" style="width:100%;height:10%;border-radius:99px"></i>
+                        <div class="hq-box" style="height:42%;background:linear-gradient(120deg,#ffd9be,#bcd6f7);margin-bottom:6%"></div>${l(70)}${l(90)}${l(40)}`
+                },
+                messages: {
+                    name: 'Messages',
+                    body: () => `<div class="hq-bubble">${l(70)}</div><div class="hq-bubble hq-bubble--me">${l(80)}</div><div class="hq-bubble">${l(55)}</div><div class="hq-bubble hq-bubble--me">${l(60)}</div>`
+                },
+                xcode: {
+                    name: 'Xcode',
+                    dark: true,
+                    body: () => [[30, '#c792ea'], [55, '#82aaff'], [42, '#c3e88d'], [68, '#e8e6e3'], [24, '#f78c6c'], [50, '#82aaff'], [62, '#c3e88d'], [35, '#e8e6e3'], [46, '#c792ea'], [58, '#82aaff'], [28, '#f78c6c'], [64, '#e8e6e3'], [40, '#c3e88d'], [52, '#c792ea']]
+                        .map(([w, c], i) => `<i class="hq-l" style="width:${w}%;background:${c};opacity:.75;margin-left:${(i % 3) * 6}%"></i>`).join('')
+                },
+                terminal: {
+                    name: 'Terminal',
+                    dark: true,
+                    body: () => l(55, '#4fd18b') + l(80) + l(65) + l(30, '#4fd18b') + l(72)
+                },
+                mail: {
+                    name: 'Mail',
+                    body: () => `<div class="hq-row"><div style="width:42%">${item('#3d7bff', 70, 90)}${item('#ff5fa8', 55, 80)}${item('#f2c230', 65, 70)}${item('#9bbf8a', 50, 85)}</div>
+                        <div class="hq-col" style="border-left:1px solid rgba(0,0,0,.06);padding-left:6%">${l(60, '#1f1a16')}${l(95)}${l(88)}${l(92)}${l(70)}${l(40)}</div></div>`
+                },
+                calendar: {
+                    name: 'Calendar',
+                    body: () => `<div class="hq-cal">${Array.from({ length: 25 }, (_, i) => `<span${[2, 8, 11, 17, 21].includes(i) ? ` style="background:${['#ffd2b8', '#cfe0ff', '#e2d8ff', '#d6f0c4', '#ffd2b8'][i % 5]}"` : ''}></span>`).join('')}</div>`
+                },
+                notes: {
+                    name: 'Notes',
+                    body: () => `<div style="padding:4% 10%">${l(55, '#1f1a16')}<br>${l(96)}${l(92)}${l(98)}${l(60)}<br>${l(94)}${l(90)}${l(97)}${l(45)}</div>`
+                },
+                music: {
+                    name: 'Music',
+                    body: () => `<div class="hq-box" style="height:62%;aspect-ratio:1;margin:0 auto 8%;background:linear-gradient(135deg,#ff6a1f,#ff5fa8 55%,#6a4dff)"></div>${l(100)}`
+                },
+                clock: {
+                    name: 'Clock',
+                    dark: true,
+                    body: () => '<div class="hq-ring"></div>'
+                }
+            };
+
+            // Window rects are [app, left, top, width, height] in % of the desktop area; the bottom ~18% is kept for the bar.
+            // Each space's apps match, in order, the icons its group shows in the bar.
+            const SPACES = [
+                { name: 'Design', windows: [['freeform', 3, 5, 58, 74], ['safari', 63, 5, 34, 42], ['messages', 63, 50, 34, 29]] },
+                { name: 'Code', windows: [['xcode', 3, 5, 50, 74], ['terminal', 55, 46, 42, 33], ['safari', 55, 5, 42, 38]] },
+                { name: 'Inbox', windows: [['mail', 3, 5, 62, 74], ['calendar', 67, 5, 30, 44], ['messages', 67, 52, 30, 27]] },
+                { name: 'Focus', windows: [['notes', 21, 5, 56, 74], ['music', 3, 47, 16, 32], ['clock', 80, 5, 17, 32]] }
+            ];
+
+            const icon = (app) => `<img class="hq-appicon" src="assets/apps/${app}.png" alt="" width="32" height="32">`;
+            const spaceWindows = [];
+            let topZ = 10;
+
+            SPACES.forEach((space, s) => {
+                spaceWindows[s] = space.windows.map(([app, x, y, w, h]) => {
+                    const def = APPS[app];
+                    const win = document.createElement('div');
+                    win.className = `hq-win is-hidden${def.dark ? ' hq-win--dark' : ''}`;
+                    win.style.cssText = `left:${x}%;top:${y}%;width:${w}%;height:${h}%`;
+                    win.innerHTML = `<div class="hq-win__bar"><i></i><i></i><i></i><span>${icon(app)}${def.name}</span></div><div class="hq-win__body">${def.body()}</div>`;
+                    win.addEventListener('pointerdown', () => {
+                        topZ += 1;
+                        win.style.zIndex = topZ;
+                    });
+                    desktop.appendChild(win);
+                    return win;
+                });
+            });
+
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let active = -1;
+            let groups = [];
+            let bar = null;
+
+            // ── Bar, mode 1: a recording of the real DesktopHQ bar.
+            const BAR = {
+                // Recording of the DesktopHQ2 bar (296×84 pt crop at 2×). Tile frames in pt; settled = a time showing each state at rest.
+                size: [296, 84],
+                groups: [[18, 18, 62, 48], [84, 18, 62, 48], [150, 18, 62, 48], [216, 18, 62, 48]],
+                settled: [0.9, 2.5, 4.5, 6.5],
+                // The same four states as stills, for browsers that won't paint a paused video frame (iOS until playback).
+                stills: ['assets/bar-design.jpg', 'assets/bar-code.jpg', 'assets/bar-inbox.jpg', 'assets/bar-focus.jpg']
+            };
+
+            const videoBar = () => {
+                const wrap = stage.querySelector('.hq-vbar');
+                const video = wrap.querySelector('video');
+                const snap = wrap.querySelector('canvas');
+                const targets = wrap.querySelector('.hq-vbar__targets');
+                const still = wrap.querySelector('.hq-vbar__poster');
+                let wipe = 0;
+                let shown = 0;
+
+                // The still layer sits over the video and always shows the current state. It steps aside only once the
+                // video has really painted that state's frame, so a browser that never paints it keeps a correct bar.
+                const videoPainted = () => video.readyState >= 2 && Math.abs(video.currentTime - BAR.settled[shown]) < 0.05;
+                const reveal = () => {
+                    if (videoPainted()) {
+                        still.classList.add('is-gone');
+                    }
+                };
+                video.addEventListener('seeked', () => {
+                    if (video.requestVideoFrameCallback) {
+                        video.requestVideoFrameCallback(reveal);
+                    } else {
+                        reveal();
+                    }
+                });
+                video.addEventListener('loadeddata', () => {
+                    video.currentTime = BAR.settled[shown];
+                });
+
+                const setMask = (value) => {
+                    snap.style.webkitMaskImage = value;
+                    snap.style.maskImage = value;
+                };
+
+                // The real bar redraws instantly on a switch, so the page plays the transition: the old frame is
+                // frozen on top and wiped away by a mask that grows out of the tile that was picked.
+                const show = (s) => {
+                    const fromVideo = still.classList.contains('is-gone') && videoPainted();
+                    const animate = !reduceMotion && s !== shown;
+                    if (animate) {
+                        cancelAnimationFrame(wipe);
+                        snap.width = 592;
+                        snap.height = 168;
+                        try {
+                            snap.getContext('2d').drawImage(fromVideo ? video : still, 0, 0, 592, 168);
+                        } catch (error) {
+                            snap.getContext('2d').clearRect(0, 0, 592, 168);
+                        }
+                        setMask('none');
+                        snap.hidden = false;
+                    }
+                    shown = s;
+                    still.src = BAR.stills[s];
+                    still.classList.remove('is-gone');
+                    video.currentTime = BAR.settled[s];
+                    if (!animate) {
+                        return;
+                    }
+                    const [x, y, w, h] = BAR.groups[s];
+                    const cx = ((x + w / 2) / BAR.size[0]) * 100;
+                    const cy = ((y + h / 2) / BAR.size[1]) * 100;
+                    const run = () => {
+                        const start = performance.now();
+                        const frame = (now) => {
+                            const p = Math.min((now - start) / 380, 1);
+                            const r = (1 - Math.pow(1 - p, 3)) * 160;
+                            setMask(`radial-gradient(ellipse ${r}% ${r * 3.6}% at ${cx}% ${cy}%, transparent 70%, #000 100%)`);
+                            if (p < 1) {
+                                wipe = requestAnimationFrame(frame);
+                            } else {
+                                snap.hidden = true;
+                            }
+                        };
+                        wipe = requestAnimationFrame(frame);
+                    };
+                    (still.decode ? still.decode() : Promise.resolve()).catch(() => {}).then(run);
+                };
+
+                // Warm the stills so a switch never waits on the network.
+                const warm = () => BAR.stills.forEach((src) => {
+                    new Image().src = src;
+                });
+
+                groups = SPACES.map((space, s) => {
+                    const [x, y, w, h] = BAR.groups[s];
+                    const t = document.createElement('button');
+                    t.type = 'button';
+                    t.className = 'hq-vbar__target';
+                    t.setAttribute('role', 'tab');
+                    t.setAttribute('aria-label', `${space.name} space`);
+                    t.style.cssText = `left:${(x / BAR.size[0]) * 100}%;top:${(y / BAR.size[1]) * 100}%;width:${(w / BAR.size[0]) * 100}%;height:${(h / BAR.size[1]) * 100}%`;
+                    t.addEventListener('click', () => {
+                        takeOver();
+                        switchTo(s);
+                    });
+                    targets.appendChild(t);
+                    return t;
+                });
+                return { el: targets, show, video, still, warm };
+            };
+
+            // ── Bar, mode 2 (fallback when the video can't play): the CSS copy of the bar.
+            const cssBar = () => {
+                const el = stage.querySelector('.hq-bar');
+                const pill = el.querySelector('.hq-bar__pill');
+                el.hidden = false;
+                groups = SPACES.map((space, s) => {
+                    if (s > 0) {
+                        const divider = document.createElement('span');
+                        divider.className = 'hq-divider';
+                        el.appendChild(divider);
+                    }
+                    const group = document.createElement('button');
+                    group.type = 'button';
+                    group.className = 'hq-group';
+                    group.setAttribute('role', 'tab');
+                    group.setAttribute('aria-label', `${space.name} space`);
+                    group.innerHTML = `<span>${space.name}</span><span class="hq-group__icons">${space.windows.map(([app]) => icon(app)).join('')}</span>`;
+                    group.addEventListener('click', () => {
+                        takeOver();
+                        switchTo(s);
+                    });
+                    el.appendChild(group);
+                    return group;
+                });
+                const movePill = () => {
+                    const g = groups[active];
+                    if (g) {
+                        pill.style.left = `${g.offsetLeft}px`;
+                        pill.style.width = `${g.offsetWidth}px`;
+                    }
+                };
+                new ResizeObserver(movePill).observe(el);
+                return { el, show: movePill };
+            };
+
+            // Transform that shrinks a window into its space's group in the bar.
+            const intoGroup = (win, s) => {
+                const d = desktop.getBoundingClientRect();
+                const g = groups[s].getBoundingClientRect();
+                const dx = g.left + g.width / 2 - d.left - (win.offsetLeft + win.offsetWidth / 2);
+                const dy = g.top + g.height / 2 - d.top - (win.offsetTop + win.offsetHeight / 2);
+                return `translate(${dx}px, ${dy}px) scale(0.05)`;
+            };
+
+            const switchTo = (s) => {
+                if (s === active) {
+                    return;
+                }
+                const first = active < 0;
+                if (!first) {
+                    spaceWindows[active].forEach((win, i) => {
+                        win.style.setProperty('--d', `${i * 0.04}s`);
+                        if (!reduceMotion) {
+                            win.style.transform = intoGroup(win, active);
+                        }
+                        win.classList.add('is-hidden');
+                    });
+                    groups[active].setAttribute('aria-selected', 'false');
+                    groups[active].classList.remove('is-active');
+                }
+                active = s;
+                bar.show(s);
+                spaceWindows[s].forEach((win, i) => {
+                    if (!reduceMotion && !first) {
+                        win.style.transition = 'none';
+                        win.style.transform = intoGroup(win, s);
+                        void win.offsetWidth;
+                        win.style.transition = '';
+                    }
+                    win.style.setProperty('--d', first ? '0s' : `${0.22 + i * 0.07}s`);
+                    win.style.transform = '';
+                    win.classList.remove('is-hidden');
+                });
+                groups[s].setAttribute('aria-selected', 'true');
+                groups[s].classList.add('is-active');
+                groups.forEach((g, i) => g.setAttribute('tabindex', i === s ? '0' : '-1'));
+                spaceLabel.textContent = SPACES[s].name;
+                live.textContent = `${SPACES[s].name} space: ${SPACES[s].windows.map(([app]) => APPS[app].name).join(', ')}`;
+            };
+
+            const useCssBar = () => {
+                const vbar = stage.querySelector('.hq-vbar');
+                if (vbar) {
+                    vbar.remove();
+                }
+                const current = active;
+                active = -1;
+                bar = cssBar();
+                bar.el.addEventListener('keydown', onArrow);
+                spaceWindows.forEach((wins) => wins.forEach((win) => win.classList.add('is-hidden')));
+                switchTo(Math.max(current, 0));
+            };
+
+            const onArrow = (event) => {
+                const delta = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+                if (!delta) {
+                    return;
+                }
+                event.preventDefault();
+                takeOver();
+                switchTo((active + delta + SPACES.length) % SPACES.length);
+                groups[active].focus();
+            };
+
+            const canPlay = document.createElement('video').canPlayType('video/mp4; codecs="avc1.4d401f"');
+            if (canPlay) {
+                bar = videoBar();
+                bar.el.addEventListener('keydown', onArrow);
+                // Without the video the stills still carry the real bar; only if they fail too, draw the CSS bar.
+                bar.still.addEventListener('error', useCssBar);
+                switchTo(0);
+            } else {
+                useCssBar();
+            }
+
+            // Autoplay: a cursor walks to the next space and clicks it, until the visitor takes over.
+            let autoplay = !reduceMotion;
+            let visible = false;
+            let timer = null;
+
+            const stopAuto = () => {
+                clearTimeout(timer);
+                timer = null;
+            };
+
+            const takeOver = () => {
+                if (autoplay) {
+                    autoplay = false;
+                    stopAuto();
+                    cursor.classList.add('is-gone');
+                }
+            };
+
+            const step = () => {
+                const next = (active + 1) % SPACES.length;
+                const st = stage.getBoundingClientRect();
+                const g = groups[next].getBoundingClientRect();
+                cursor.classList.remove('is-gone');
+                cursor.style.left = `${g.left - st.left + g.width * 0.42}px`;
+                cursor.style.top = `${g.top - st.top + g.height * 0.45}px`;
+                timer = setTimeout(() => {
+                    cursor.classList.add('is-clicking');
+                    timer = setTimeout(() => {
+                        cursor.classList.remove('is-clicking');
+                        switchTo(next);
+                        timer = setTimeout(step, 2400);
+                    }, 140);
+                }, 950);
+            };
+
+            const startAuto = () => {
+                if (autoplay && visible && !document.hidden && !timer) {
+                    timer = setTimeout(step, 700);
+                }
+            };
+
+            new IntersectionObserver((entries) => {
+                visible = entries[0].isIntersecting;
+                if (visible) {
+                    if (bar.video && bar.video.preload !== 'auto') {
+                        bar.video.preload = 'auto';
+                        bar.warm();
+                    }
+                    startAuto();
+                } else {
+                    stopAuto();
+                    if (bar.video) {
+                        bar.video.pause();
+                    }
+                }
+            }, { threshold: 0.4 }).observe(stage);
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopAuto();
+                } else {
+                    startAuto();
+                }
+            });
+
+            stage.addEventListener('pointerdown', takeOver);
+
+            document.addEventListener('keydown', (event) => {
+                const n = Number(event.key);
+                if (!visible || !(n >= 1 && n <= SPACES.length) || event.metaKey || event.ctrlKey || event.altKey) {
+                    return;
+                }
+                if (event.target.closest && event.target.closest('input, textarea, [contenteditable]')) {
+                    return;
+                }
+                takeOver();
+                switchTo(n - 1);
+            });
+        })();
+    </script>
+    <script src="assets/plugins.js" defer></script>
+    <script src="assets/stories.js" defer></script>
+    <script src="assets/install.js" defer></script>
+</body>
+</html>
