@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog – DesktopHQ</title>
+    <meta name="description" content="What’s new in every DesktopHQ2 release, newest first.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f1a16'/%3E%3Ctext x='32' y='44' font-family='Times New Roman,serif' font-size='38' fill='%23f7f1e6' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../assets/site.css">
+    <style>
+        .cl-list {
+            max-width: 720px;
+            margin: 0 auto 96px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cl-entry {
+            /* Clears the top edge when the app's toast deep-links to #X.Y.Z. */
+            scroll-margin-top: 24px;
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 8px 32px;
+            padding: 40px 24px;
+            margin: 0 -24px;
+            border-top: 1px solid var(--divider);
+        }
+
+        .cl-entry:first-child {
+            border-top: 0;
+        }
+
+        .cl-entry.is-target {
+            border-radius: 20px;
+            border-top-color: transparent;
+            animation: cl-glow 3.2s ease-out both;
+        }
+
+        .cl-entry.is-target + .cl-entry {
+            border-top-color: transparent;
+        }
+
+        /* The linked version warms up, then settles to a faint tint so it stays findable. */
+        @keyframes cl-glow {
+            0% { background-color: rgba(233, 196, 128, 0); }
+            15% { background-color: rgba(233, 196, 128, 0.42); }
+            100% { background-color: rgba(233, 196, 128, 0.14); }
+        }
+
+        .cl-meta {
+            padding-top: 6px;
+        }
+
+        .cl-version {
+            display: inline-block;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.18em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .cl-version:hover {
+            color: var(--muted);
+        }
+
+        .cl-tag {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 1px 9px;
+            border-radius: 999px;
+            background: var(--ink);
+            color: var(--bg);
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            vertical-align: 1px;
+        }
+
+        .cl-tag--pulled {
+            background: transparent;
+            color: var(--muted);
+            box-shadow: inset 0 0 0 1px var(--divider);
+        }
+
+        .is-pulled .cl-highlight,
+        .is-pulled .cl-items {
+            color: var(--muted);
+        }
+
+        .cl-highlight a {
+            color: inherit;
+        }
+
+        .cl-date {
+            display: block;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .cl-highlight {
+            font-family: "Times New Roman", Times, serif;
+            font-size: clamp(1.6rem, 4.2vw, 2.15rem);
+            font-weight: 400;
+            letter-spacing: -0.015em;
+            line-height: 1.2;
+            margin: 0 0 16px;
+        }
+
+        .cl-items {
+            margin: 0 0 22px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cl-items li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 6px;
+        }
+
+        .cl-items li::before {
+            content: "";
+            position: absolute;
+            left: 2px;
+            top: 0.72em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--muted);
+            opacity: 0.55;
+        }
+
+        .cl-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px 22px;
+            font-size: 0.86rem;
+        }
+
+        .cl-links a {
+            color: var(--ink);
+        }
+
+        .cl-links .cl-download {
+            padding: 8px 18px;
+            border: 1px solid var(--ink);
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 0.66rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .cl-links .cl-download:hover {
+            background: var(--ink);
+            color: var(--bg);
+        }
+
+        .cl-empty {
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .cl-empty a {
+            color: var(--ink);
+        }
+
+        .cl-feed {
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .cl-feed a {
+            color: var(--ink);
+        }
+
+        @media (max-width: 640px) {
+            .cl-entry {
+                grid-template-columns: 1fr;
+                padding: 32px 16px;
+                margin: 0 -16px;
+            }
+
+            .cl-meta {
+                padding-top: 0;
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                gap: 12px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .cl-entry.is-target {
+                animation: none;
+                background-color: rgba(233, 196, 128, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="site-nav">
+        <a class="site-nav__brand" href="../">DesktopHQ</a>
+        <div class="site-nav__links">
+            <a href="../">Home</a>
+            <a href="../plugins/">Plugins</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-heading">
+            <h1 class="page-heading__title">What’s new.</h1>
+            <p class="page-heading__subtitle">Every DesktopHQ2 release, newest first. DesktopHQ2 updates itself, so the newest one is usually already on your Mac.</p>
+        </section>
+
+        <ol class="cl-list" id="releases" aria-live="polite">
+            <li class="cl-empty">Loading releases…</li>
+        </ol>
+        <noscript>
+            <p class="cl-empty">The full list is also on <a href="https://github.com/DesktopHQ/DesktopHQ2-Release/releases">GitHub</a>.</p>
+        </noscript>
+
+        <footer>© 2026 DesktopHQ — Multitasking Spaces · <a href="./" aria-current="page">Changelog</a></footer>
+    </main>
+    <script>
+        (function () {
+            // Keep in step with the home page's Download button and install.js.
+            const DOWNLOAD = 'https://github.com/DesktopHQ/DesktopHQ2-Release/releases/latest/download/DesktopHQ2-arm64.zip';
+            const ALL = 'https://github.com/DesktopHQ/DesktopHQ2-Release/releases';
+            const list = document.getElementById('releases');
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Anchors are the bare version, so "#v0.1.9" and "#0.1.9" both land on 0.1.9.
+            const bare = (v) => String(v || '').trim().replace(/^v/i, '');
+
+            const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+            // Entries are plain text, generated from DesktopHQ2's docs/CHANGELOG.md.
+            const inline = escape;
+
+            const when = (iso) => {
+                const d = new Date(`${iso}T12:00:00Z`);
+                return isNaN(d) ? escape(iso || '') : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+            };
+
+            // A pulled release says so with `"pulled": true` or a highlight that starts "Pulled:".
+            const PULLED = /^\s*pulled\s*[:\u2013\u2014-]\s*/i;
+            const isPulled = (r) => r.pulled === true || PULLED.test(r.highlight || '');
+
+            const entry = (r, latest, known) => {
+                const v = bare(r.version);
+                const pulled = isPulled(r);
+                const items = (r.items || []).map((t) => `<li>${inline(t)}</li>`).join('');
+                const notes = /^https:\/\//.test(r.url || '') ? `<a href="${escape(r.url)}" rel="noopener">Release notes on GitHub</a>` : '';
+                let head = inline(r.highlight || `DesktopHQ2 ${v}`);
+                if (pulled) {
+                    // The tag already says "Pulled"; the rest of the note reads as a sentence, with the fix linked.
+                    const note = String(r.highlight || '').replace(PULLED, '') || (typeof r.pulled === 'string' ? r.pulled : 'Use a newer version.');
+                    head = inline(note.charAt(0).toUpperCase() + note.slice(1))
+                        .replace(/\b(\d+\.\d+\.\d+)\b/g, (m) => (known.has(m) && m !== v ? `<a href="#${m}">${m}</a>` : m));
+                }
+                const tag = pulled ? '<span class="cl-tag cl-tag--pulled">Pulled</span>' : latest ? '<span class="cl-tag">Latest</span>' : '';
+                return `<li class="cl-entry${pulled ? ' is-pulled' : ''}" id="${escape(v)}">
+                    <div class="cl-meta">
+                        <span><a class="cl-version" href="#${escape(v)}">${escape(v)}</a>${tag}</span>
+                        ${r.date ? `<time class="cl-date" datetime="${escape(r.date)}">${when(r.date)}</time>` : ''}
+                    </div>
+                    <div>
+                        <h2 class="cl-highlight">${head}</h2>
+                        ${items ? `<ul class="cl-items">${items}</ul>` : ''}
+                        <div class="cl-links">${pulled ? '' : `<a class="cl-download" href="${DOWNLOAD}" rel="noopener">Download</a>`}${notes}</div>
+                    </div>
+                </li>`;
+            };
+
+            const land = (smooth) => {
+                const v = bare(decodeURIComponent(location.hash.slice(1)));
+                const el = v && document.getElementById(v);
+                if (!el || !el.classList.contains('cl-entry')) {
+                    return;
+                }
+                list.querySelectorAll('.is-target').forEach((x) => x.classList.remove('is-target'));
+                // Reflow so the glow restarts when the same version is linked twice.
+                void el.offsetWidth;
+                el.classList.add('is-target');
+                el.scrollIntoView({ block: 'start', behavior: smooth && !reduced ? 'smooth' : 'auto' });
+            };
+
+            // Absolute, so /changelog (no slash) and /changelog/ both find it.
+            fetch('/changelog/changelog.json', { cache: 'no-cache' })
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error(res.status);
+                    }
+                    return res.json();
+                })
+                .then((releases) => {
+                    if (!Array.isArray(releases) || !releases.length) {
+                        throw new Error('empty');
+                    }
+                    const known = new Set(releases.map((r) => bare(r.version)));
+                    // "Latest" goes to the newest release that wasn't pulled.
+                    const latest = releases.findIndex((r) => !isPulled(r));
+                    list.innerHTML = releases.map((r, i) => entry(r, i === latest, known)).join('');
+                    if ('scrollRestoration' in history) {
+                        history.scrollRestoration = 'manual';
+                    }
+                    land(false);
+                    window.addEventListener('hashchange', () => land(true));
+                })
+                .catch(() => {
+                    list.innerHTML = `<li class="cl-empty">Couldn’t load the list just now. It’s also on <a href="${ALL}">GitHub</a>.</li>`;
+                });
+        })();
+    </script>
+</body>
+</html>

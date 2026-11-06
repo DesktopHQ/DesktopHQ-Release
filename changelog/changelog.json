@@ -1,0 +1,49 @@
+[
+  {
+    "date" : "2026-11-05",
+    "highlight" : "The bar now hides only in macOS Full Screen, not when a window simply fills the screen.",
+    "items" : [
+      "Maximise a window, zoom it, or use Fill, and the bar stays right where it is. It steps aside only when you choose Full Screen from the green button (or press Ctrl+Cmd+F), and comes back the moment you leave.",
+      "Apps that draw over the whole screen (an AI agent's cursor, an annotation or dimming tool) no longer make the bar disappear. 0.1.10 took them for full-screen video.",
+      "With two displays, Full Screen on the other one leaves your bar alone."
+    ],
+    "url" : "https://github.com/DesktopHQ/DesktopHQ2-Release/releases/tag/v0.1.12",
+    "version" : "0.1.12"
+  },
+  {
+    "date" : "2026-11-05",
+    "highlight" : "Fixes a crash shortly after launch in 0.1.9.",
+    "items" : [
+      "0.1.9 quit on its own a few seconds after starting. Sorry about that. This one stays up.",
+      "Everything 0.1.9 brought is here: the bar stepping aside for full-screen video, stray windows tucked away, one-click updates.",
+      "From now on, every release has to run for 30 seconds without a hiccup before it ships."
+    ],
+    "url" : "https://github.com/DesktopHQ/DesktopHQ2-Release/releases/tag/v0.1.10",
+    "version" : "0.1.10"
+  },
+  {
+    "date" : "2026-11-05",
+    "highlight" : "Pulled: crashed after launch; use 0.1.10.",
+    "items" : [
+      "When something goes full screen, the floating bar fades out of the way and comes back when you leave.",
+      "Windows that sneak back onto the screen from another group (looking at you, Slack) are tucked away again.",
+      "Updates arrive with a small dot on the menu-bar icon. One click, and you're on the new version, permissions and groups intact.",
+      "Focus brings rain by default, Lock In if you have DesktopHQ, or a track of your own.",
+      "DesktopHQ2 is now signed and notarized by Apple, so it opens like any other app. No more Terminal tricks."
+    ],
+    "url" : "https://github.com/DesktopHQ/DesktopHQ2-Release/releases/tag/v0.1.9",
+    "version" : "0.1.9"
+  },
+  {
+    "date" : "2026-10-31",
+    "highlight" : "Meet Tidy: one keystroke, and every window in the group gets a little breathing room.",
+    "items" : [
+      "Hyper+T spaces the active group's windows evenly, leaving the floating bar clear.",
+      "Borrow a window from another group as a guest, and send it home when you're done.",
+      "Cmd+Tab now stays inside the group you're in.",
+      "Focus, Awake and Bookmarks live in your bar, a click away."
+    ],
+    "url" : "https://github.com/DesktopHQ/DesktopHQ2-Release/releases/tag/v0.1.7",
+    "version" : "0.1.7"
+  }
+]
